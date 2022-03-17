@@ -42,8 +42,8 @@ device should have its own antenna delay properly calibrated to get good precisi
 */
 
 /* Default antenna delay values for 64 MHz PRF.*/
-#define TX_ANT_DLY 16456
-#define RX_ANT_DLY 16456	
+//#define TX_ANT_DLY 16456
+//#define RX_ANT_DLY 16456	
 
 	
 int readfromspi(uint16 headerLength, const uint8 *headerBuffer, uint32 readlength, uint8 *readBuffer);
