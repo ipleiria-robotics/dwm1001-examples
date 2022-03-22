@@ -1,0 +1,129 @@
+<!DOCTYPE CrossStudio_Project_File>
+<solution Name="twr_tag" target="8" version="2">
+  <project Name="deca_twr_tag">
+    <configuration
+      Name="Common"
+      arm_architecture="v7EM"
+      arm_core_type="Cortex-M4"
+      arm_endian="Little"
+      arm_fp_abi="Hard"
+      arm_fpu_type="FPv4-SP-D16"
+      arm_simulator_memory_simulation_parameter="RX 00000000,00080000,FFFFFFFF;RWX 20000000,00010000,CDCDCDCD"
+      arm_target_device_name="nRF52832_xxAA"
+      arm_target_interface_type="SWD"
+      debug_start_from_entry_point_symbol="No"
+      debug_target_connection="J-Link"
+      linker_section_placement_file="$(ProjectDir)/flash_placement.xml"
+      linker_section_placements_segments="FLASH RX 0x00000000 0x00080000;SRAM RWX 0x20000000 0x00010000"
+      project_directory=""
+      project_type="Executable" />
+    <folder Name="Internal Files">
+      <file file_name="RTE/thumb_crt0.s" />
+      <file file_name="ses_nrf52_startup.s" />
+      <file file_name="system_nrf52.c" />
+    </folder>
+    <configuration
+      Name="nrf52832_xxaa"
+      c_only_additional_options=""
+      c_preprocessor_definitions="BOARD_DW1001_DEV;BSP_SIMPLE;;CONFIG_GPIO_AS_PINRESET;FLOAT_ABI_HARD;NRF52;NRF52832_XXAA;NRF52_PAN_74;SWI_DISABLE0"
+      c_user_include_directories="$(ProjectDir)/nRF/CMSIS/Device/Include;$(ProjectDir)/CMSIS_5/CMSIS/Core/Include;../../../nRF5_SDK_14.2.0/components/device;../UART;../config;../../../nRF5_SDK_14.2.0/components;../../../nRF5_SDK_14.2.0/components/boards;../../../nRF5_SDK_14.2.0/components/drivers_nrf/clock;../../../nRF5_SDK_14.2.0/components/drivers_nrf/common;../../../nRF5_SDK_14.2.0/components/drivers_nrf/delay;../../../nRF5_SDK_14.2.0/components/drivers_nrf/gpiote;../../../nRF5_SDK_14.2.0/components/drivers_nrf/hal;../../../nRF5_SDK_14.2.0/components/drivers_nrf/nrf_soc_nosd;../../../nRF5_SDK_14.2.0/components/drivers_nrf/spi_master;../../../nRF5_SDK_14.2.0/components/drivers_nrf/uart;../../../nRF5_SDK_14.2.0/components/libraries/atomic;../../../nRF5_SDK_14.2.0/components/libraries/balloc;../../../nRF5_SDK_14.2.0/components/libraries/bsp;../../../nRF5_SDK_14.2.0/components/libraries/button;../../../nRF5_SDK_14.2.0/components/libraries/fifo;../../../nRF5_SDK_14.2.0/components/libraries/experimental_log;../../../nRF5_SDK_14.2.0/components/libraries/experimental_log/src;../../../nRF5_SDK_14.2.0/components/libraries/experimental_memobj;../../../nRF5_SDK_14.2.0/components/libraries/experimental_section_vars;../../../nRF5_SDK_14.2.0/components/libraries/scheduler;../../../nRF5_SDK_14.2.0/components/libraries/strerror;../../../nRF5_SDK_14.2.0/components/libraries/timer;../../../nRF5_SDK_14.2.0/components/libraries/util;../../../nRF5_SDK_14.2.0/components/libraries/uart;../../../nRF5_SDK_14.2.0/components/toolchain;../../../nRF5_SDK_14.2.0/components/toolchain/cmsis/include;../../../deca_driver;../../../deca_driver/port;../../../nRF5_SDK_14.2.0/external/fprintf;../../../nRF5_SDK_14.2.0/external/segger_rtt;../../../nRF5_SDK_14.2.0/external/freertos/;../../../nRF5_SDK_14.2.0/external/freertos/source;../../../nRF5_SDK_14.2.0/external/freertos/config;../../../nRF5_SDK_14.2.0/external/freertos/source/include;../../../nRF5_SDK_14.2.0/external/freertos/portable/ARM/nrf52;../../../nRF5_SDK_14.2.0/external/freertos/portable/CMSIS/nrf52;../../../nRF5_SDK_14.2.0/external/freertos/source/portable;../../examples/ss_twr_init_int/UART;../../../boards;../../..;.;./.."
+      linker_additional_options=""
+      linker_section_placement_file="$(ProjectDir)/RTE/flash_placement.xml" />
+    <configuration
+      Name="External Keil"
+      c_additional_options="--reduce_paths" />
+    <folder Name="Application">
+      <file file_name="main.c" />
+      <file file_name="sdk_config.h" />
+    </folder>
+    <folder Name="Board Definition">
+      <file file_name="boards.c" />
+      <folder Name="Board Support">
+        <file file_name="bsp.c" />
+        <file file_name="bsp_nfc.c" />
+      </folder>
+    </folder>
+    <folder Name="nRF_Drivers">
+      <file file_name="nrf_drv_common.c" />
+      <file file_name="nrf_drv_gpiote.c" />
+      <file file_name="nrf_drv_spi.c" />
+      <file file_name="nrf_drv_uart.c" />
+      <file file_name="nrf_drv_clock.c" />
+      <file file_name="nrf_drv_twi.c" />
+      <file file_name="nrf_drv_twi.h" />
+    </folder>
+    <folder Name="nRF_Libraries">
+      <file file_name="app_button.c" />
+      <file file_name="app_error.c" />
+      <file file_name="app_error_weak.c" />
+      <file file_name="app_scheduler.c" />
+      <file file_name="app_util_platform.c" />
+      <file file_name="nrf_assert.c" />
+      <file file_name="nrf_balloc.c" />
+      <file file_name="nrf_fprintf.c" />
+      <file file_name="nrf_fprintf_format.c" />
+      <file file_name="nrf_memobj.c" />
+      <file file_name="nrf_strerror.c" />
+      <file file_name="app_fifo.c" />
+      <file file_name="app_uart_fifo.c" />
+      <file file_name="retarget.c" />
+    </folder>
+    <folder Name="nRF_Log">
+      <file file_name="nrf_log_backend_rtt.c" />
+      <file file_name="nrf_log_backend_serial.c" />
+      <file file_name="nrf_log_backend_uart.c" />
+      <file file_name="nrf_log_default_backends.c" />
+      <file file_name="nrf_log_frontend.c" />
+      <file file_name="nrf_log_str_formatter.c" />
+    </folder>
+    <folder Name="nRF_Segger_RTT">
+      <file file_name="SEGGER_RTT.c" />
+      <file file_name="SEGGER_RTT_printf.c" />
+      <file file_name="SEGGER_RTT_Syscalls_KEIL.c" />
+    </folder>
+    <folder Name="Decadriver">
+      <file file_name="deca_device.c" />
+      <file file_name="deca_params_init.c" />
+      <file file_name="port_platform.c" />
+    </folder>
+    <folder Name="Freertos">
+      <file file_name="croutine.c" />
+      <file file_name="event_groups.c" />
+      <file file_name="list.c" />
+      <file file_name="queue.c" />
+      <file file_name="tasks.c" />
+      <file file_name="timers.c" />
+      <file file_name="heap_1.c" />
+      <file file_name="app_timer_freertos.c" />
+      <file file_name="port_cmsis.c" />
+      <file file_name="port_cmsis_systick.c" />
+      <file file_name="portmacro_cmsis.h" />
+      <file file_name="port.c" />
+    </folder>
+    <folder Name="Config">
+      <file file_name="FreeRTOSConfig.h" />
+    </folder>
+    <folder Name="Uart">
+      <file file_name="UART.c" />
+    </folder>
+    <folder Name="::CMSIS" />
+    <folder Name="::Device" />
+    <folder Name="LIS2DH12">
+      <file file_name="LIS2DH12.c" />
+      <file file_name="LIS2DH12.h" />
+      <file file_name="LIS2DH12registers.h" />
+    </folder>
+    <folder Name="TWI">
+      <file file_name="TWI.c" />
+      <file file_name="TWI.h" />
+    </folder>
+  </project>
+  <configuration Name="Internal" hidden="Yes" />
+  <configuration
+    Name="nrf52832_xxaa"
+    build_output_directory="$(ProjectDir)/Output/nrf52832_xxaa/Exe"
+    inherited_configurations="Internal"
+    linker_additional_options=""
+    linker_printf_fp_enabled="Float"
+    linker_section_placement_file="$(ProjectDir)/RTE/flash_placement.xml" />
+</solution>

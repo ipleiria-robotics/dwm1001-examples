@@ -1,142 +1,88 @@
-# dwm1001-keil-examples
-
-*Note that the examples below consist in very basic application using the UWB features of the DWM1001C. These examples are not intended to be used in a commercial application and may not comply with regulation requirements.*
-
-*Advanced firmware for DWM1001C that would comply with regulations can be found on https://www.decawave.com/product/dwm1001-module/*
+# dwm1001-tag
 
 ## Overview
 
-This project contains C simple examples for DWM1001 hardware and its derivatives, such as the DWM1001-DEV board.
+This project contains C code developed to run on the device serving as tag. On contrary of the anchors, this code offers interface from the user with the tag device. Using a micro USB cable(UART) it is possible to configure and running the ranging protocol to obtain the distances from the defined anchors. The principal function for this code is to run the ranging protocol and print it on the Serial Port so the user can store the data to use after. The adding functionalities will be described more after.
 
-The DWM1001 module is a Ultra Wideband (UWB) and Bluetooth hardware based on DecaWave's DW1000 IC and Nordic Semiconductor nrF52832 SoC. It allows to build a scalable Two-Way-Ranging (TWR) RTLS systems with up to thousands of tags. 
+**Note:** To compile and program the devices we used the IDE Segger was used along side with some adicional packages. All of that can be consulted on the Decawave's repository where all the steps to installation and compilling are described.
 
-The DWM1001-DEV is a development board for the DWM1001 module. It contains an integrated Jlink to facilitate development and debbuging.
-For more information about DWM1001, please visit www.decawave.com.
+This project organization is described now:
 
-The C simple examples allow user to discover the key functionalities offered by the DWM1001 and UWB. These examples are customized for DWM1001-DEV, and some modifications will be necessary to port them to other DWM1001 based hardware (in particular LED and button interface)
-
-The project is built as follow : 
 ```
-dwm1001-keil-examples/
-├── boards            // DWM1001-DEV board specific definitions
-├── deca_driver       // DW1000 API software package 2.04 
-├── examples          // C simple examples 
-│   ├── ss_twr_init   // Single Sided Two Way Ranging Initiator example
-│   ├── ss_twr_resp   // Single Sided Two Way Ranging Responder example
-│   └── twi_accel     // LIS2DH12 accelerometer example with Two Wire interface 
-├── nRF5_SDK_14.2.0   // Nordic Semiconductor SDK 14.2 for nrF52832
+dwm1001-tag/
+├── boards/                // DWM1001-DEV board specific definitions
+├── deca_driver/           // DW1000 API software package 2.04 
+├── examples/              
+│   └── ss_twr_tag    
+│       ├── ...            // Other existent content containing 
+│       │                     additional files
+│       ├── LIS2DH12/      // Folder containing files for the 
+│       │                     LIS2DH12 MEM's
+│       └── SES/       
+│           ├── ...   
+│           ├── main.c    // Main file containing code
+│           └── ss_twr_init-emProject // File to opening Segger directly
+│
+├── nRF5_SDK_14.2.0/   // Nordic Semiconductor SDK 14.2 for nrF52832
 └── README.md
 ```
-For more information about nrF52832 and nrF SDK, please visit http://infocenter.nordicsemi.com/
 
-## Supported IDE
+***
 
-The examples are ready to use with the following IDE :
-* Segger Embedded Studio (SES)
-* Keil KEIL µVision
+## Tag communication protocol
 
-## Segger Embedded Studio
+#### Overview
 
-Each example contains a emproject project file for SES. The examples compile and load cleanly to the DWM1001.   
-The project was created with the SES version V3.34a. 
+So the UWB protocols implemented were the SS-TWR (Single-Sided Two-Way Ranging) e o DS-TWR(Double-Sided Two-Way Ranging). We uses the simple examples from Decawave's repository and implement  our way to estimate positions using at a max 8 anchors. The communication in UWB with all the anchors is made by using unique ID's, each one corresponding the each anchor. So in the end, to acquire all distances, we need to make a communication with the respective anchor.
 
-SES has a free license for nrF52832 development. Consequently, this IDE can be used without any limitation for DWM1001 development.
+#### Calibration
 
-For more information regarding Segger Embedded Studio, please visit https://www.segger.com/products/development-tools/embedded-studio/
+Reading the documentation we notice that all the devices must be calibrated. That calibration includes Power level of Transmission, Clock Drift, Antenna Delay. Adding to these factors, the Bias-correction is another effect that should be accounted. The values obtain on their fabrication and calibration process are store on the devices OTP memory and it must be loaded on the specific registers by code. More of this information can be found on the User's Guide provided. 
 
-For more information about free license for nrF52832, please read https://www.nordicsemi.com/News/News-releases/Product-Related-News/Nordic-Semiconductor-adds-Embedded-Studio-IDE-support-for-nRF51-and-nRF52-SoC-development
+The Bias-correction is factor it is needed to correct an estimated distance using a relation between RSL (Received Signal Level) by the tag and a offset of distance. In this case this depends on each device serving as tag. To accelerate we used a standard table (Lookup table) that can be consulted on the documentation.
 
-### SES : Additional Package
+We get the MDEK1001 kit, so all the devices comes calibrated but when we made the first measures, we detect an error greater then 10cm. So we propose an offset correction on the value acquired when estimating the time of signal travel and we end up getting good resultes.
 
-When using SES IDE, you will need to install the following package :
+***
 
-Package                                                                                                                           
-CMSIS 5 CMSIS-CORE Support Package (version 5.02)                                                                           
-CMSIS-CORE Support Package (version 4.05)                                                                           
-Nordic Semiconductor nRF CPU Support Package (version 1.06)                                                                           
+## Tag main functionalities
 
-They can be install from SES itself, through the package manager in the tools menu. 
+The main functionalities programmed for the tag are:
 
-## KEIL µVision IDE
+- Chosing the ranging protocol to use (ss-twrt or ds-twr) - on our tests the ss_twr (single-sided Two-Way Raning) were used as the fabricant says that the result is praticly the same. More information can be consulted on the Decawave's documentation and User guides.
 
-Each example contains a µVision5 project file for Keil µVision IDE. The examples compile and load cleanly to the DWM1001.
-The project was created with the KEIL uVision version V5.24.2.0. 
+- Reset the communications to all anchors - this makes all the anchors defined on the system to be reseted and aquired the standard UWB configuration (128 preamble, 6.81Mpbs, prf 64MHz and channel 5 selected).
 
-Keil µVision has a free license for project up to 32KB. For more information regarding Keil µVision, please visit http://www2.keil.com/mdk5/uvision/
+- Define the delay between measuring distances to all anchors - this is just to make easy for any program that read the Serial port to just handle the messages and not losing them.
 
-### µVision Error: Flash Download failed - "Cortex-M4"
+- Redefine the Antenna Delay offset to correct the distance value on the calibrated distance. There is dedicated documentation about this topics and we find this way to actually reduce the offset value that was existing on estimted distances.
 
-This error can be observed if there is a memory conflict between the binary to load and the current firmware on the target hardware. This issue can be easily fixed by fully erasing the target device 's flash memory. Keil µVision cannot perform a full erase and the following free tool can be used :
+- Toggle on/off more data related with the receiving Rx frame
 
-* J-flash lite 
-* nrfjprog command line script
+- Print statistics data from UWB communications
 
-For more information about the issue, please see :
+- Toggle Bias-correction to correct the value os distance estimated with a correlation with the Received Signal Level - RSL. This could be a little confusing because there should not be any correlation between signal power and the way that distances were estimated. More information about this topic can be found on many documents from the Decawave's guides.
 
-https://devzone.nordicsemi.com/f/nordic-q-a/18278/error-flash-download-failed---cortex---m4-while-flashing-softdevice-from-keil-uvision-5
+- Toggle the UWB configuration possible on this firmware to be used by the tag. In this case there are two configurations possible: 128 preamble, 6.81Mpbs, prf 64MHz and channel 5 and 1024 preamble, 110kpbs, prf 64MHz and channel 5.
+  
+  **Note:** more options can be consulted like consulting the Channel Impulse Response (CIR) on a receiving signal frame, print the registers value programmed and others.
+  
+  ***
 
-## Example Details 
+## Ranging process
 
-The SS-TWR scheme can be implemented using two DWM1001 modules, the first one programmed as an initiator and the second one as a responder.
+To run the ranging process first it is necessary to choose the protocol to communicate and then input the number of acquisitions to do. Just need to follow instruction from the device.
 
-### Single Sided Two Way Ranging -- Initiator
+#### Ranging validation
 
-This example contains the source code for the initiator. The initiator will send a frame, wait for the response from the receiver, calculate the distance and output it on the UART (can be observed on a serial terminal)
+So, after we refer the calibrations and the functionalities, first it is necessary to recalibrate the devices so the error value on the calibrated distance (depending of your UWB configurations) that was 5.01 meters. By doing that it is possible to obtain a lower error (< 10cm) on that distance an on the others different distances. 
 
-```
-dwm1001-keil-examples/examples/ss_twr_init/
-├── config                    // Contains sdk_config.h file for nrF SDK 14.2 customization
-├── main.c                    // Initialization and main program
-├── ss_init_main.c            // Single sided initiator core program
-├── UART                      // Uart 
-├── SES
-│   └── ss_twr_init.emProject // Segger Embedded Studio project
-└── Keil uvision
-     └── ss_twr_init.uvprojx  // Keil uvision project
+This way of correcting with an offset it is not ideal because if we change of device that is working as tag we need to recalibrate all this values. But for effects of demonstration, this is enough.
 
-```
-The application function is detailed in the main.c and the ss_init_main.c files. 
+Thoose values can be stored "hardcode" or using the tag functionality to store that value while it is powered on.
 
-Calibration may be necessary in order to have an accurate measurement. It can be done by adjusting the antenna delay which is hardware dependent. 
+***
 
-### Single Sided Two Way Ranging -- Responder
+For more information consult the code or the documentation or even the Decawave's examples that this project was bases for.
 
-This example contains the source code for the responder. The receiver will receive a frame from the initiator and send the corresponding answer.
-
-```
-dwm1001-keil-examples/examples/ss_twr_resp/
-├── config                    // Contains sdk_config.h file for nrF SDK 14.2 customization
-├── main.c                    // Initialization and main program
-├── ss_resp_main.c            // Single sided responder core program
-├── SES
-│   └── ss_twr_resp.emProject // Segger Embedded Studio project
-└── Keil uvision
-     └── ss_twr_resp.uvprojx  // Keil uvision project
-```
-The application function is detailed in the main.c and the ss_resp_main.c files. 
-
-Calibration may be necessary in order to have an accurate measurement. It can be done by adjusting the antenna delay which is hardware dependent. 
-
-### Two Wire Interface Accelerometer
-
-This example implements a TWI between the LIS2DH12 and the nrF52832. 
-The blue led will be on when a motion is detected by the LIS2DH12. It also reports the accelerometer state on the UART.
-
-```
-dwm1001-keil-examples/examples/twi_accel/
-├── config                    // Contains sdk_config.h file for nrF SDK 14.2 customization
-├── LIS2DH12                  // LIS2DH12 (accelerometer) low level driver and api
-├── main.c                    // Initialization and main program
-├── TWI                       // TWI
-├── UART                      // Uart
-├── SES
-│   └── twi_accel.emProject // Segger Embedded Studio project
-└── Keil uvision
-     └── twi_accel.uvprojx  // Keil uvision project
-```
-The application function is detailed in the main.c file.
-
-
-
-
-
+### 
