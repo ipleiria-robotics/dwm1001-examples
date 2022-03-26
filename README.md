@@ -1,12 +1,10 @@
-# dwm1001-keil-examples
+# Getting Started
 
-*Note that the examples below consist in very basic application using the UWB features of the DWM1001C. These examples are not intended to be used in a commercial application and may not comply with regulation requirements.*
+So as described before,we use the Decawave MDEK1001 kit hardware to program our code and testing our indoor localization system based on UWB. We used the principle of the Decawave repository examples to developed our code. For that we make a Fork from the original repository and create 2 adicional Branches, one with the code for the Anchors and the other with code for the Tag.
 
-*Advanced firmware for DWM1001C that would comply with regulations can be found on https://www.decawave.com/product/dwm1001-module/*
+## Requirements and Instalation
 
-## Overview
-
-This project contains C simple examples for DWM1001 hardware and its derivatives, such as the DWM1001-DEV board.
+This project contains C simple examples for DWM1001 hardware and for the compilling and flashing
 
 The DWM1001 module is a Ultra Wideband (UWB) and Bluetooth hardware based on DecaWave's DW1000 IC and Nordic Semiconductor nrF52832 SoC. It allows to build a scalable Two-Way-Ranging (TWR) RTLS systems with up to thousands of tags. 
 
@@ -16,6 +14,7 @@ For more information about DWM1001, please visit www.decawave.com.
 The C simple examples allow user to discover the key functionalities offered by the DWM1001 and UWB. These examples are customized for DWM1001-DEV, and some modifications will be necessary to port them to other DWM1001 based hardware (in particular LED and button interface)
 
 The project is built as follow : 
+
 ```
 dwm1001-keil-examples/
 ├── boards            // DWM1001-DEV board specific definitions
@@ -27,11 +26,13 @@ dwm1001-keil-examples/
 ├── nRF5_SDK_14.2.0   // Nordic Semiconductor SDK 14.2 for nrF52832
 └── README.md
 ```
+
 For more information about nrF52832 and nrF SDK, please visit http://infocenter.nordicsemi.com/
 
 ## Supported IDE
 
 The examples are ready to use with the following IDE :
+
 * Segger Embedded Studio (SES)
 * Keil KEIL µVision
 
@@ -75,7 +76,7 @@ For more information about the issue, please see :
 
 https://devzone.nordicsemi.com/f/nordic-q-a/18278/error-flash-download-failed---cortex---m4-while-flashing-softdevice-from-keil-uvision-5
 
-## Example Details 
+## Example Details
 
 The SS-TWR scheme can be implemented using two DWM1001 modules, the first one programmed as an initiator and the second one as a responder.
 
@@ -93,8 +94,8 @@ dwm1001-keil-examples/examples/ss_twr_init/
 │   └── ss_twr_init.emProject // Segger Embedded Studio project
 └── Keil uvision
      └── ss_twr_init.uvprojx  // Keil uvision project
-
 ```
+
 The application function is detailed in the main.c and the ss_init_main.c files. 
 
 Calibration may be necessary in order to have an accurate measurement. It can be done by adjusting the antenna delay which is hardware dependent. 
@@ -113,6 +114,7 @@ dwm1001-keil-examples/examples/ss_twr_resp/
 └── Keil uvision
      └── ss_twr_resp.uvprojx  // Keil uvision project
 ```
+
 The application function is detailed in the main.c and the ss_resp_main.c files. 
 
 Calibration may be necessary in order to have an accurate measurement. It can be done by adjusting the antenna delay which is hardware dependent. 
@@ -134,9 +136,5 @@ dwm1001-keil-examples/examples/twi_accel/
 └── Keil uvision
      └── twi_accel.uvprojx  // Keil uvision project
 ```
+
 The application function is detailed in the main.c file.
-
-
-
-
-
