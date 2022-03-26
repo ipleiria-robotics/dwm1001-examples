@@ -63,8 +63,7 @@
   <Watches active="0" update="Never"/>
  </Watch4>
  <Files>
-  <SessionOpenFile windowGroup="DockEditLeft" x="5" y="1315" useTextEdit="1" openedFrom="C:/Users/Rui Gomes/Desktop/Decawave version/dwm1001-anchor/examples/twr_anchor/main.c" useBinaryEdit="0" left="0" path="../../../deca_driver/deca_device.c" selected="0" top="1293" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="18" y="1139" useTextEdit="1" openedFrom="" useBinaryEdit="0" left="0" path="../../../deca_driver/deca_device_api.h" selected="1" top="1124" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="0" useTextEdit="1" openedFrom="" useBinaryEdit="0" left="0" path="../main.c" selected="1" top="0" codecName="Default"/>
  </Files>
  <ARMCrossStudioWindow activeProject="twr_anchor" fileDialogDefaultFilter="*.c" autoConnectTarget="J-Link" buildConfiguration="nrf52832_xxaa" sessionSettings="" debugSearchFileMap="" fileDialogInitialDirectory="" debugSearchPath="" autoConnectCapabilities="3199"/>
 </session>
