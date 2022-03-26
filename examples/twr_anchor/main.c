@@ -30,6 +30,11 @@
 #define APP_NAME_SS_TWR "TWR LabRob - ANCHOR\r\n"
 #define CONFIG_MODE 0
 
+// define here the id for the anchors anbd tag to use on the uwb frames
+#define TAG_ID '1' // frame id to use on communications to detect the tag id on send and receiving msg
+#define ANCHOR_ID '9' // frame id to use on communications to detect the respective anchor on send and receiving msgs
+#define BROADCAST_ID '0' // frame id used for the broadcast msg - all anchors receive this and respond to this id
+
 //antenna delays defined here - must be calibrated for each anchor
 //#define TX_ANT_DLY 16456
 //#define RX_ANT_DLY 16456
@@ -169,22 +174,22 @@ static uint64 resp_tx_ts;
 
 /* Hold copy of status register state here for reference so that it can be examined at a debug breakpoint. */
 static uint32 status_reg = 0;
-static uint32 status_reg2 = 0;
-static uint32 status_msk = 0;
+// static uint32 status_reg2 = 0;
+//static uint32 status_msk = 0;
 
 /* frame from bradcast comming from tag with the method to use */
-static uint8 rx_config_frame[] = {0x41, 0x88, 0, 0xCA, 0xDE, 'T', '1', 'A', '0', 0, 0, 0};
+static uint8 rx_config_frame[] = {0x41, 0x88, 0, 0xCA, 0xDE, 'T', TAG_ID, 'A', BROADCAST_ID, 0, 0, 0};
 /* frame that indicates the acquisition is over */
-static uint8 rx_end_frame[] = {0x41, 0x88, 0, 0xCA, 0xDE, 'T', '1', 'A', '0', 0xff, 0, 0};
+static uint8 rx_end_frame[] = {0x41, 0x88, 0, 0xCA, 0xDE, 'T', TAG_ID, 'A', BROADCAST_ID, 0xff, 0, 0};
 
 //Anchor ss-twr frame format
-static uint8 rx_poll_msg_ss[] = {0x41, 0x88, 0, 0xCA, 0xDE, 'T', '1', 'A', '9', 0xE0, 0, 0};
-static uint8 tx_resp_msg_ss[] = {0x41, 0x88, 0, 0xCA, 0xDE, 'A', '9', 'T', '1', 0xE1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+static uint8 rx_poll_msg_ss[] = {0x41, 0x88, 0, 0xCA, 0xDE, 'T', TAG_ID, 'A', ANCHOR_ID, 0xE0, 0, 0};
+static uint8 tx_resp_msg_ss[] = {0x41, 0x88, 0, 0xCA, 0xDE, 'A', ANCHOR_ID, 'T', TAG_ID, 0xE1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 //Anchor ds-twr frame format
-static uint8 rx_poll_msg_ds[] = {0x41, 0x88, 0, 0xCA, 0xDE, 'T', '1', 'A', '9', 0x21, 0, 0};
-static uint8 tx_resp_msg_ds[] = {0x41, 0x88, 0, 0xCA, 0xDE, 'A', '9', 'T', '1', 0x10, 0x02, 0, 0, 0, 0};
-static uint8 rx_final_msg_ds[] = {0x41, 0x88, 0, 0xCA, 0xDE, 'T', '1', 'A', '9', 0x23, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
-static uint8 tx_range_msg_ds[] = {0x41, 0x88, 0, 0xCA, 0xDE, 'A', '9', 'T', '1', 0x12, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+static uint8 rx_poll_msg_ds[] = {0x41, 0x88, 0, 0xCA, 0xDE, 'T', TAG_ID, 'A',ANCHOR_ID, 0x21, 0, 0};
+static uint8 tx_resp_msg_ds[] = {0x41, 0x88, 0, 0xCA, 0xDE, 'A', ANCHOR_ID, 'T', TAG_ID, 0x10, 0x02, 0, 0, 0, 0};
+static uint8 rx_final_msg_ds[] = {0x41, 0x88, 0, 0xCA, 0xDE, 'T', TAG_ID, 'A', ANCHOR_ID, 0x23, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+static uint8 tx_range_msg_ds[] = {0x41, 0x88, 0, 0xCA, 0xDE, 'A', ANCHOR_ID, 'T', TAG_ID, 0x12, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 
 //static uint16 temp_fab = 0;
 static uint32 temp_fab = 0;
@@ -633,8 +638,8 @@ void ds_resp_msg()
   {
   };
 
-  status_reg2 = dwt_read8bitoffsetreg(SYS_STATUS_ID, 4);
-  status_msk = dwt_read32bitreg(SYS_MASK_ID);
+  //status_reg2 = dwt_read8bitoffsetreg(SYS_STATUS_ID, 4);
+  //status_msk = dwt_read32bitreg(SYS_MASK_ID);
 
   if (status_reg & SYS_STATUS_RXFCG)
   {
@@ -679,8 +684,8 @@ void ds_resp_msg()
       dwt_writetxfctrl(sizeof(tx_resp_msg_ds), 0, 1);             /* Zero offset in TX buffer, ranging. */
 
       status_reg = dwt_read32bitreg(SYS_STATUS_ID);
-      status_reg2 = dwt_read8bitoffsetreg(SYS_STATUS_ID, 4);
-      status_msk = dwt_read32bitreg(SYS_MASK_ID);
+      //status_reg2 = dwt_read8bitoffsetreg(SYS_STATUS_ID, 4);
+      //status_msk = dwt_read32bitreg(SYS_MASK_ID);
 
       ret = dwt_starttx(DWT_START_TX_DELAYED | DWT_RESPONSE_EXPECTED);
 
@@ -702,8 +707,8 @@ void ds_resp_msg()
       }
 
       status_reg = dwt_read32bitreg(SYS_STATUS_ID);
-      status_reg2 = dwt_read8bitoffsetreg(SYS_STATUS_ID, 4);
-      status_msk = dwt_read32bitreg(SYS_MASK_ID);
+      //status_reg2 = dwt_read8bitoffsetreg(SYS_STATUS_ID, 4);
+      //status_msk = dwt_read32bitreg(SYS_MASK_ID);
 
       /* Poll for reception of expected "final" frame or error/timeout. See NOTE 8 below. */
       while (!((status_reg = dwt_read32bitreg(SYS_STATUS_ID)) & (SYS_STATUS_RXFCG | SYS_STATUS_ALL_RX_TO | SYS_STATUS_ALL_RX_ERR)))
