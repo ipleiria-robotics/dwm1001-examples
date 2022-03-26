@@ -22,20 +22,47 @@
 #include "nrf_uart.h"
 #include "port_platform.h"
 #include "sdk_config.h"
-// #include "ss_init_main.h"
 #include "stdio.h"
 #include "task.h"
 #include "timers.h"
 #include <ctype.h>
 #include <string.h>
-//-----------------dw1000----------------------------
 
-#define APP_NAME_SS_TWR "TWR LabRob - DecaWave Ranging ESTG\r\n"
+#define APP_NAME_SS_TWR "\r\nTWR LabRob - DecaWave Ranging ESTG\r\n"
 #define CONFIG_MODE 0
+// definition of the ID's to use on the uwb frame msg's for the tag and respective anchors
+#define TAG_ID '1' // id used for the identification of the tag on the uwb msg's
+#define BROADCAST_ID '0' // broadcast id msg used
+// the maximum number of anchors we use was 8 so the next globals serves as the init order 1 to 8 anchors ID
+#define ANCHOR_1_ID '1'
+#define ANCHOR_2_ID '2'
+#define ANCHOR_3_ID '3'
+#define ANCHOR_4_ID '4'
+#define ANCHOR_5_ID '5'
+#define ANCHOR_6_ID '6'
+#define ANCHOR_7_ID '7'
+#define ANCHOR_8_ID '8'
 
-/* Inter-ranging delay period, in milliseconds. */
-//#define RNG_DELAY_MS 250
-#define RNG_DELAY_MS 1
+/* 
+  Antenna Delay offset correction
+  This is used to pprogram the antenna delay offset of correction
+  after the OTP is used. We used this to reduce even more the error.
+  For this it is necessary to execute the tag ->  anchor_x communication
+  and adjust the value taking in account the system units 15.65 ps. 
+  When necessary to recalibrate start with 0 value and then adjsut until 
+  the pretended error
+  The values of antenna delay offset here are the result off our calibration
+  tests executed. {29, 24, 18, 22, 41, 33, 39, 33}
+*/
+#define ANTENNA_DELAY_1 29
+#define ANTENNA_DELAY_2 24
+#define ANTENNA_DELAY_3 18
+#define ANTENNA_DELAY_4 22
+#define ANTENNA_DELAY_5 41
+#define ANTENNA_DELAY_6 33
+#define ANTENNA_DELAY_7 39
+#define ANTENNA_DELAY_8 33
+
 
 /* Length of the common part of the message (up to and including the function code, see NOTE 1 below). */
 #define ALL_MSG_COMMON_LEN 10
@@ -126,8 +153,6 @@ static uint16 tx_antenna_delay_16 = 0;
 static uint32 read_delay_opt = 0;
 static uint32 smart_tx_value_16 = 0;
 static uint32 smart_tx_value_64 = 0;
-//static uint16 temp_fab = 0;
-//static uint16 volt_fab = 0;
 static uint32 temp_fab = 0;
 static uint32 volt_fab = 0;
 static float temperature = 0;
@@ -186,24 +211,23 @@ static dwt_config_t config_1024 = {
 };
 
 //--------------dw1000---end---------------
-static uint8 tx_config_frame[] = {0x41, 0x88, 0, 0xCA, 0xDE, 'T', '1', 'A', '0', 0, 0, 0};
-static uint8 tx_end_frame[] = {0x41, 0x88, 0, 0xCA, 0xDE, 'T', '1', 'A', '0', 0xff, 0, 0};
-static uint8 tx_preamble_frame[] = {0x41, 0x88, 0, 0xCA, 0xDE, 'T', '1', 'A', '0', 0x00, 0, 0};
+static uint8 tx_config_frame[] = {0x41, 0x88, 0, 0xCA, 0xDE, 'T', TAG_ID, 'A', BROADCAST_ID, 0, 0, 0};
+static uint8 tx_end_frame[] = {0x41, 0x88, 0, 0xCA, 0xDE, 'T', '1', 'A', BROADCAST_ID, 0xff, 0, 0};
+static uint8 tx_preamble_frame[] = {0x41, 0x88, 0, 0xCA, 0xDE, 'T', TAG_ID, 'A', BROADCAST_ID, 0x00, 0, 0};
 
 //msg for ss-twr method
-static uint8 tx_poll_msg_ss[] = {0x41, 0x88, 0, 0xCA, 0xDE, 'T', '1', 'A', 0, 0xE0, 0, 0};
-static uint8 rx_resp_msg_ss[] = {0x41, 0x88, 0, 0xCA, 0xDE, 'A', 0, 'T', '1', 0xE1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+static uint8 tx_poll_msg_ss[] = {0x41, 0x88, 0, 0xCA, 0xDE, 'T', TAG_ID, 'A', 0, 0xE0, 0, 0};
+static uint8 rx_resp_msg_ss[] = {0x41, 0x88, 0, 0xCA, 0xDE, 'A', 0, 'T', TAG_ID, 0xE1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 
 //msg for ds_twr method
-static uint8 tx_poll_msg_ds[] = {0x41, 0x88, 0, 0xCA, 0xDE, 'T', '1', 'A', 0, 0x21, 0, 0};
-static uint8 rx_resp_msg_ds[] = {0x41, 0x88, 0, 0xCA, 0xDE, 'A', 0, 'T', '1', 0x10, 0x02, 0, 0, 0, 0};
-static uint8 tx_final_msg_ds[] = {0x41, 0x88, 0, 0xCA, 0xDE, 'T', '1', 'A', 0, 0x23, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
-static uint8 rx_range_msg_ds[] = {0x41, 0x88, 0, 0xCA, 0xDE, 'A', 0, 'T', '1', 0x12, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+static uint8 tx_poll_msg_ds[] = {0x41, 0x88, 0, 0xCA, 0xDE, 'T', TAG_ID, 'A', 0, 0x21, 0, 0};
+static uint8 rx_resp_msg_ds[] = {0x41, 0x88, 0, 0xCA, 0xDE, 'A', 0, 'T', TAG_ID, 0x10, 0x02, 0, 0, 0, 0};
+static uint8 tx_final_msg_ds[] = {0x41, 0x88, 0, 0xCA, 0xDE, 'T', TAG_ID, 'A', 0, 0x23, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+static uint8 rx_range_msg_ds[] = {0x41, 0x88, 0, 0xCA, 0xDE, 'A', 0, 'T', TAG_ID, 0x12, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 
-//static uint8 anchors_id[] = {'1','2','3','4','5','6','7','8'};
-static uint8 anchors_id_array[] = {'1', '2', '3', '4', '5', '6', '7', '8'};
-//static int8 anchor_antenna_delay_correction[] = {15, 15, 20, 20, 25, 15, 20, 25};
-static int8 anchor_antenna_delay_correction[] = {29, 24, 18, 22, 41, 33, 39, 33};
+
+static uint8 anchors_id_array[] = {ANCHOR_1_ID, ANCHOR_2_ID, ANCHOR_3_ID, ANCHOR_4_ID, ANCHOR_5_ID, ANCHOR_6_ID, ANCHOR_7_ID, ANCHOR_8_ID};
+static int8 anchor_antenna_delay_correction[] = {ANTENNA_DELAY_1, ANTENNA_DELAY_2, ANTENNA_DELAY_3, ANTENNA_DELAY_4, ANTENNA_DELAY_5, ANTENNA_DELAY_6, ANTENNA_DELAY_7, ANTENNA_DELAY_8};
 
 /* Frame sequence number, incremented after each transmission. */
 static uint8 frame_seq_nb = 0;
