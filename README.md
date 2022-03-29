@@ -51,6 +51,12 @@ The main functionalities programmed for the tag are:
   
   **Note:** more options can be consulted like consulting the Channel Impulse Response (CIR) on a receiving signal frame, print the registers value programmed and others.
 
+#### Interface with tag
+
+For the interface with the tag it is necessary to start a serial communication port. After that the next menu will appear. 
+
+<img title="" src="https://github.com/ipleiria-robotics/indoor_positioning_uwb/blob/main/img/menu_tag.jpg" alt="">
+
 ***
 
 ## Tag communication protocol
@@ -74,8 +80,6 @@ To program a Tag device, the only changes there are necessary to do is to take c
 #define ANCHOR_6_ID '6'
 #define ANCHOR_7_ID '7'
 #define ANCHOR_8_ID '8'
-
-
 ```
 
 Resuming this part of code, the Tag was an ID unique that each anchor knows too (using the anchor firmware to configure this part too). In this case, for the Tag code, is given at a maximum 8 anchors to cmmunicate and each one was an unique ID to communicate with them.
@@ -85,6 +89,8 @@ It is important that each communication between anchor and tag have their ID's u
 Here is representation image showing how our localization system based on UWB it works:
 
 <img title="" src="https://github.com/ipleiria-robotics/indoor_positioning_uwb/blob/main/img/sli_esquema.jpg" alt="">
+
+Note: we used Putty to interface a serial connection with the tag and to use all the possible options previously described.
 
 ***
 
