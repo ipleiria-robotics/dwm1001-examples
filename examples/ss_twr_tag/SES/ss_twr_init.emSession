@@ -82,7 +82,7 @@
   <Watches active="0" update="Never"/>
  </Watch4>
  <Files>
-  <SessionOpenFile windowGroup="DockEditLeft" x="12" y="689" useTextEdit="1" openedFrom="" useBinaryEdit="0" left="0" path="main.c" selected="1" top="669" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="50" y="709" useTextEdit="1" openedFrom="" useBinaryEdit="0" left="0" path="main.c" selected="1" top="756" codecName="Default"/>
   <SessionOpenFile windowGroup="DockEditLeft" x="0" y="5" useTextEdit="1" openedFrom="C:/Users/Rui Gomes/Desktop/Decawave version/dwm1001-tag_with_acc/examples/ss_twr_tag/SES/main.c" useBinaryEdit="0" left="0" path="LIS2DH12.h" selected="0" top="0" codecName="Default"/>
   <SessionOpenFile windowGroup="DockEditLeft" x="0" y="424" useTextEdit="1" openedFrom="C:/Users/Rui Gomes/Desktop/Decawave version/dwm1001-tag_with_acc/examples/ss_twr_tag/SES/main.c" useBinaryEdit="0" left="0" path="LIS2DH12.c" selected="0" top="404" codecName="Default"/>
   <SessionOpenFile windowGroup="DockEditLeft" x="0" y="60" useTextEdit="1" openedFrom="C:/Users/Rui Gomes/Desktop/Decawave version/dwm1001-tag_with_acc/examples/ss_twr_tag/SES/LIS2DH12.c" useBinaryEdit="0" left="0" path="LIS2DH12registers.h" selected="0" top="58" codecName="Default"/>
