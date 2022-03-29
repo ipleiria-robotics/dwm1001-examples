@@ -25,3 +25,9 @@ dwm1001-examples
 ├── anchor/         // branch contains the code to use on anchors devices
 └── tag/            // branch containing the code to use on tag devices
 ```
+
+To chance between branches use on the firmware folder:
+git checkout anchor - to change to the anchor branch
+git checkout tag - to change to the tag branch
+
+More information is descibbed on each Readme.m file for each branch.
