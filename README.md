@@ -1,4 +1,4 @@
-# Getting Started
+# Indoor Localization System - UWB - Firmware Getting Started
 
 This is a Fork from the original repository from Decawave´s repository simple example to program the DWM1001 devices. As the manufactor describes, this is just a simple example how to run simple code on 2 devices, one as initiator and another as responder for a simple exchange of UWB messages for distance calculation. For someone who needs to learn how this technology can be used, this is the best example to start off. For our initiation, we did the same and then we start to developed our own codes, one for the anchors and another for the tags. 
 
