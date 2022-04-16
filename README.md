@@ -1,4 +1,4 @@
-# dwm1001-tag
+# Indoor Localization System - UWB - Firmware dwm1001-tag
 
 ## Overview
 
