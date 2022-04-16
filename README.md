@@ -1,4 +1,4 @@
-# dwm1001-anchor
+# Indoor Localization System - UWB - Firmware dwm1001-anchor
 
 ## Overview
 
