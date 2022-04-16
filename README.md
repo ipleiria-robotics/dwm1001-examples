@@ -114,6 +114,8 @@ The Bias-correction is factor it is needed to correct an estimated distance usin
 
 We get the MDEK1001 kit, so all the devices comes calibrated but when we made the first measures, we detect an error greater then 10cm. So we propose an offset correction on the value acquired when estimating the time of signal travel and we end up getting good resultes.
 
+In the Tools folder we have an excel file with the calibrations that we made during our process. We recommend to use it in case of calibration is needed.
+
 Thoose value can determined and bee adjusted on the menu Antenna Delay corrections or by inserting them on code, for example.
 
 ```
