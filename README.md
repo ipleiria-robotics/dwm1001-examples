@@ -27,7 +27,10 @@ dwm1001-examples
 ```
 
 To chance between branches use on the firmware folder:
-git checkout anchor - to change to the anchor branch
-git checkout tag - to change to the tag branch
+
+```
+git checkout anchor - to change to the anchor branch directory
+git checkout tag - to change to the tag branch directory
+```
 
 More information is descibbed on each Readme.m file for each branch.
