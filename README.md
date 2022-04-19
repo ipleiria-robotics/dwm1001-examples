@@ -131,8 +131,26 @@ Thoose value can determined and bee adjusted on the menu Antenna Delay correctio
 
 **Note:** this values presented are the result from our test we conduct to determine the offset correction for the antenna delay that comes from OTP device memory. Keep in mind that this values depends each communication between Tag and each Anchor. Changing the device serving as Tag the same value determined could not be the adjusted for this new one.
 
-***
 
-For more information consult the code or the documentation or even the Decawave's examples that this project was bases for.
 
-### 
+#### Example of printing data on Serial Port
+
+Now, it is presented an example of a simple output printout of the data when "ranging" to others anchors (in this case 4). The data printed for each anchor in this case is 4 distinct values after the frame number:
+
+Frame_number, **FPS, RSL, Distance_computed, Evaluation** , ...
+
+0,**-105,-83,12853,0.00**,-97,-80,6226,0.00,-81,-76,10457,0.00,-80,-77,4104,1.00
+
+Looking to the bold values example of one anchor "ranging", the explanation is the fallow:
+
+**FPS**- first path signal level
+
+**RSL** - Received signal level
+
+**Distance_computed**– distance estimated with the respective anchor in millimetres
+
+**Evaluation**- a coefficient value obtain when determining the conditions on the signal and data obtain for this distance estimated. We didn't use it, but we just let for future analysis.
+
+---
+
+A detailed explanation can be search on the Decawave's [documentation]([Product Documentation - Decawave](https://www.decawave.com/product-documentation/)) and [applications]([Application Notes - Decawave](https://www.decawave.com/application-notes/)) notes website. 
