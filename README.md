@@ -34,3 +34,13 @@ git checkout tag - to change to the tag branch directory
 ```
 
 More information is descibbed on each Readme.m file for each branch.
+
+## Important notes:
+
+All the development elaborated on this repository was possible with the help of the Decawave's documentation and application notes. Finally, the Decawave's forum was helpful alongside with the community answers found.
+
+Documentation: [Product Documentation - Decawave](https://www.decawave.com/product-documentation/)
+
+Application notes: [Application Notes - Decawave](https://www.decawave.com/application-notes/)
+
+Forum: https://decaforum.decawave.com/
