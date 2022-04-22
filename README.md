@@ -20,11 +20,13 @@ dwm1001-anchor/
 │       ├── main.c        // Main file containing code
 │       └── SES/       
 │           ├── ...   
-│           └── ss_twr_init-emProject // File to opening Segger directly
+│           └── ss_twr_init.emProject // File to opening Segger directly
 │
 ├── nRF5_SDK_14.2.0/   // Nordic Semiconductor SDK 14.2 for nrF52832
 └── README.md
 ```
+
+Note: if the "ss_twr_init.emProject" doens't open directly the project, load it by using the IDE option to open project and select this file.
 
 ***
 
@@ -52,7 +54,7 @@ So on the anchors this means to detect when an UWB message frame is the anchor c
 
 On the beginning of the main.c file change the variables responsible for the frames ID's. This menas only to change this variables:
 
-```
+```c
 #define TAG_ID '1' 
 #define ANCHOR_ID '9'
 #define BROADCAST_ID '0' 
