@@ -69,7 +69,7 @@ So the UWB protocols implemented were the SS-TWR (Single-Sided Two-Way Ranging) 
 
 To program a Tag device, the only changes there are necessary to do is to take care the ID's to be used by the UWB frames message. This is necessary so both the Tag and Anchors known where the frame was coming from and where it must be sent.
 
-```
+```c
 #define TAG_ID '1'         // id used for the tag 
 #define BROADCAST_ID '0' // broadcast id msg used
 
@@ -120,7 +120,7 @@ In the [docs](https://github.com/ipleiria-robotics/indoor_positioning_uwb/tree/m
 
 Thoose value can determined and bee adjusted on the menu Antenna Delay corrections or by inserting them on code, for example.
 
-```
+```c
 #define ANTENNA_DELAY_1 29
 #define ANTENNA_DELAY_2 24
 #define ANTENNA_DELAY_3 18
