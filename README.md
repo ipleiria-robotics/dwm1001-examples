@@ -153,4 +153,4 @@ Looking to the bold values example of one anchor "ranging", the explanation is t
 
 ---
 
-A detailed explanation can be search on the Decawave's [documentation]([Product Documentation - Decawave](https://www.decawave.com/product-documentation/)) and [applications]([Application Notes - Decawave](https://www.decawave.com/application-notes/)) notes website. 
+A detailed explanation can be search on the Decawave's documentation ([Product Documentation - Decawave](https://www.decawave.com/product-documentation/)) and applications ([Application Notes - Decawave](https://www.decawave.com/application-notes/)) notes website. 
