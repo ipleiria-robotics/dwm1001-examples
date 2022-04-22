@@ -21,11 +21,13 @@ dwm1001-tag/
 │       └── SES/       
 │           ├── ...   
 │           ├── main.c    // Main file containing code
-│           └── ss_twr_init-emProject // File to opening Segger directly
+│           └── ss_twr_init.emProject // File to opening Segger directly
 │
 ├── nRF5_SDK_14.2.0/   // Nordic Semiconductor SDK 14.2 for nrF52832
 └── README.md
 ```
+
+Note: if the "ss_twr_init.emProject" doens't open directly the project, load it by using the IDE option to open project and select this file.
 
 ***
 
@@ -130,8 +132,6 @@ Thoose value can determined and bee adjusted on the menu Antenna Delay correctio
 ```
 
 **Note:** this values presented are the result from our test we conduct to determine the offset correction for the antenna delay that comes from OTP device memory. Keep in mind that this values depends each communication between Tag and each Anchor. Changing the device serving as Tag the same value determined could not be the adjusted for this new one.
-
-
 
 #### Example of printing data on Serial Port
 
