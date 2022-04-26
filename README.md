@@ -22,7 +22,7 @@ dwm1001-examples
 │                       project to run between 2 devices A and B
 │                       and calculate the distance
 │                   
-├── anchor/         // branch contains the code to use on anchors devices
+├── anchor/         // branch containing the code to use on anchors devices
 └── tag/            // branch containing the code to use on tag devices
 ```
 
